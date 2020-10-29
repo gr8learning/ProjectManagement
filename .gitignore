@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ProjectManagement.Api/ProjectManagement.Entities/bin/Debug/netstandard2.0
+/ProjectManagement.Api/ProjectManagement.Entities/obj
+/ProjectManagement.Api/ProjectManagement.Shared/bin/Debug/netstandard2.0
+/ProjectManagement.Api/ProjectManagement.Shared/obj
+/ProjectManagement.Api/ProjectManagement.Api/bin/Debug/netcoreapp3.1
+/ProjectManagement.Api/ProjectManagement.Api/obj
+/ProjectManagement.Api/ProjectManagement.Data.Implementation/obj
+/ProjectManagement.Api/ProjectManagement.Data/bin/Debug/netstandard2.0
+/ProjectManagement.Api/ProjectManagement.Data/obj
+/ProjectManagement.Api/ProjectManagement.Data.Implementation/bin/Debug/netstandard2.0
