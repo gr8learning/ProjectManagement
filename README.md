@@ -1,0 +1,2 @@
+# ProjectManagement
+Project Management  Domain: Software Development Business Context Project Management is a widely used application among development teams to manage project tasks and its lifecycle (Dev, QA, Completed). This tool will manage the tasks for a project and its team members. New tasks can be created and assigned to different team members; task’s status can be updated to different stages.
