@@ -51,6 +51,7 @@ namespace ProjectManagement.Api.Controllers
         [HttpPost]
         public IActionResult Post(Project project)
         {
+            project.CreatedOn = DateTime.UtcNow;
             _pmDbContext.Projects.Add(project);
             _pmDbContext.SaveChanges();
 
