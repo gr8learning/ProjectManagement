@@ -49,10 +49,11 @@ namespace ProjectManagement.Api.Controllers
         public IActionResult Post(Entities.Task task)
         {
             task.AssignedToUser = _pmDbContext.Users.Where(user => task.AssignedToUserID == user.ID).FirstOrDefault();
-            var project = _pmDbContext.Projects.Where(project => task.ProjectID == project.ID).FirstOrDefault();
+            task.CreatedOn = DateTime.UtcNow;
+            // var project = _pmDbContext.Projects.Where(project => task.ProjectID == project.ID).FirstOrDefault();
             _pmDbContext.Tasks.Add(task);
-            project.Tasks.Append(task);
-            _pmDbContext.Update(project);
+            // project.Tasks.Append(task);
+            // _pmDbContext.Update(project);
             _pmDbContext.SaveChanges();
             return Ok(task);
             // throw new NotImplementedException();
