@@ -5,5 +5,9 @@ namespace ProjectManagement.Shared
 {
     public class PMContext : DbContext
     {
+        public PMContext(DbContextOptions<PMContext> context): base(context)
+        {
+
+        }
     }
 }

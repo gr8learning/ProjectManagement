@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ProjectManagement.Entities
@@ -15,6 +16,7 @@ namespace ProjectManagement.Entities
 
         public string Detail { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedOn { get; set; }
 
         public virtual IEnumerable<Task> Tasks { get; set; }
