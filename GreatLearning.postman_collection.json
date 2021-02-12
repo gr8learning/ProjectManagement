@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "8cc4afe8-8367-42cf-91ff-8ca04e030d4c",
+		"name": "GreatLearning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "https://localhost:44303/api/User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"FirstName\": \"Nitin\",\n\t\"LastName\": \"Kumar\",\n\t\"Email\": \"nitinkumar6912@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/User",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"User"
+							]
+						},
+						"description": "Add a user"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/User",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"User"
+							]
+						},
+						"description": "Get Users"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/User",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"User"
+							]
+						},
+						"description": "Delete All Users"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Nitin1\",\n    \"lastName\": \"Kumar1\",\n    \"email\": \"nitinkumar6912@gmail.com\",\n    \"id\": 1\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/User",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"User"
+							]
+						},
+						"description": "Update User"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/User/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/User/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"User",
+								"1"
+							]
+						},
+						"description": "Delete user by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/User/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/User/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"User",
+								"1"
+							]
+						},
+						"description": "Get User by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "project",
+			"item": [
+				{
+					"name": "https://localhost:44303/api/Project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/Project",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Project"
+							]
+						},
+						"description": "Get All Projects"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Project/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/Project/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Project",
+								"1"
+							]
+						},
+						"description": "Get Project by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Project",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"P1\",\r\n    \"Detail\" : \"P1-Detail\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/Project",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Project"
+							]
+						},
+						"description": "Add Project"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Project",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"P1-Updated\",\r\n    \"detail\": \"P1-Detail-Update\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/Project",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Project"
+							]
+						},
+						"description": "Update Project"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/Project",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Project"
+							]
+						},
+						"description": "Delete All Projects"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Project/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/Project/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Project",
+								"1"
+							]
+						},
+						"description": "Delete Project by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "task",
+			"item": [
+				{
+					"name": "https://localhost:44303/api/Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/Task/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Task",
+								""
+							]
+						},
+						"description": "Get All Tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ProjectID\": 1,\r\n    \"Detail\" : \"Task-1\",\r\n    \"Status\" : \"New\",\r\n    \"AssignedToUserId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/Task",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Task"
+							]
+						},
+						"description": "Add Task"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Task/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44303/api/Task/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Task",
+								"1"
+							]
+						},
+						"description": "Get Task By ID"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Task",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"projectID\": 2,\r\n        \"detail\": \"Task-1-Updated\",\r\n        \"status\": \"InProgress\",\r\n        \"assignedToUserID\": 2,\r\n        \"id\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/Task",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Task"
+							]
+						},
+						"description": "Update Task"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Task/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"projectID\": 2,\r\n        \"detail\": \"Task-1-Updated\",\r\n        \"status\": \"InProgress\",\r\n        \"assignedToUserID\": 2,\r\n        \"id\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/Task/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Task",
+								"1"
+							]
+						},
+						"description": "DeleteByID"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:44303/api/Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"projectID\": 2,\r\n        \"detail\": \"Task-1-Updated\",\r\n        \"status\": \"InProgress\",\r\n        \"assignedToUserID\": 2,\r\n        \"id\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44303/api/Task",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44303",
+							"path": [
+								"api",
+								"Task"
+							]
+						},
+						"description": "Delete All Tasks"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
