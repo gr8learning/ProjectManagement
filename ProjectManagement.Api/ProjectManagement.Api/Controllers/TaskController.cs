@@ -16,6 +16,9 @@ namespace ProjectManagement.Api.Controllers
         public TaskController(PMContext context)
         {
             _pmContext = context;
+
+            // seed data
+            _pmContext.Database.EnsureCreated();
         }
 
         [HttpGet]
