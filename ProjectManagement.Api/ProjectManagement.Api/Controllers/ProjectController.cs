@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Entities;
+using ProjectManagement.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,23 +12,23 @@ namespace ProjectManagement.Api.Controllers
     [Route("api/Project")]
     public class ProjectController : BaseController<Project>
     {
-        private readonly PMDbContext _pmDbContext;
+        private readonly PMContext _pmContext;
 
-        public ProjectController(PMDbContext context)
+        public ProjectController(PMContext context)
         {
-            _pmDbContext = context;
+            _pmContext = context;
         }
 
         [HttpGet]
         public new IActionResult Get()
         {
-            var projects = _pmDbContext.Projects.ToList();
+            var projects = _pmContext.Projects.ToList();
             foreach (var project in projects)
             {
-                project.Tasks = _pmDbContext.Tasks.Where(task => task.ProjectID == project.ID).ToList();
+                project.Tasks = _pmContext.Tasks.Where(task => task.ProjectID == project.ID).ToList();
                 foreach (var task in project.Tasks)
                 {
-                    task.AssignedToUser = task.AssignedToUserID >= 0 ? _pmDbContext.Users.Single(user => user.ID == task.AssignedToUserID) : null;
+                    task.AssignedToUser = task.AssignedToUserID >= 0 ? _pmContext.Users.Single(user => user.ID == task.AssignedToUserID) : null;
                 }
             }
             return Ok(projects);
@@ -38,11 +39,11 @@ namespace ProjectManagement.Api.Controllers
         [Route("{id}")]
         public new IActionResult Get(long id)
         {
-            var project = _pmDbContext.Projects.Where(project => id == project.ID).FirstOrDefault();
-            project.Tasks = _pmDbContext.Tasks.Where(task => task.ProjectID == project.ID).ToList();
+            var project = _pmContext.Projects.Where(project => id == project.ID).FirstOrDefault();
+            project.Tasks = _pmContext.Tasks.Where(task => task.ProjectID == project.ID).ToList();
             foreach (var task in project.Tasks)
             {
-                task.AssignedToUser = task.AssignedToUserID >= 0 ? _pmDbContext.Users.Single(user => user.ID == task.AssignedToUserID) : null;
+                task.AssignedToUser = task.AssignedToUserID >= 0 ? _pmContext.Users.Single(user => user.ID == task.AssignedToUserID) : null;
             }
             return Ok(project);
             // throw new NotImplementedException();
@@ -52,8 +53,8 @@ namespace ProjectManagement.Api.Controllers
         public IActionResult Post(Project project)
         {
             project.CreatedOn = DateTime.UtcNow;
-            _pmDbContext.Projects.Add(project);
-            _pmDbContext.SaveChanges();
+            _pmContext.Projects.Add(project);
+            _pmContext.SaveChanges();
 
             return Ok("Project Added : " + project.Name);
             // throw new NotImplementedException();
@@ -62,11 +63,11 @@ namespace ProjectManagement.Api.Controllers
         [HttpPut]
         public IActionResult Put(Project project)
         {
-            var projectInDb = _pmDbContext.Projects.Single(p => project.ID == p.ID);
+            var projectInDb = _pmContext.Projects.Single(p => project.ID == p.ID);
             projectInDb.Name = project.Name;
             projectInDb.Detail = project.Detail;
-            _pmDbContext.Update(projectInDb);
-            _pmDbContext.SaveChanges();
+            _pmContext.Update(projectInDb);
+            _pmContext.SaveChanges();
             return Ok(project);
             // throw new NotImplementedException();
         }
@@ -74,19 +75,19 @@ namespace ProjectManagement.Api.Controllers
         [HttpDelete]
         public new IActionResult Delete()
         {
-            var projects = _pmDbContext.Projects.ToList();
+            var projects = _pmContext.Projects.ToList();
             var res = "";
             foreach (var p in projects)
             {
-                var tasks = _pmDbContext.Tasks.Where(task => p.ID == task.ProjectID).ToList();
+                var tasks = _pmContext.Tasks.Where(task => p.ID == task.ProjectID).ToList();
                 foreach (var task in tasks)
                 {
                     task.ProjectID = -1;
-                    _pmDbContext.Update(task);
-                    _pmDbContext.SaveChanges();
+                    _pmContext.Update(task);
+                    _pmContext.SaveChanges();
                 }
-                _pmDbContext.Remove(p);
-                _pmDbContext.SaveChanges();
+                _pmContext.Remove(p);
+                _pmContext.SaveChanges();
                 res += "Project Deleted : " + p.Name + "\n";
             }
             return Ok(res);
@@ -97,16 +98,16 @@ namespace ProjectManagement.Api.Controllers
         [Route("{id}")]
         public IActionResult DeleteById(long id)
         {
-            var project = _pmDbContext.Projects.Single(project => project.ID == id);
-            var tasks = _pmDbContext.Tasks.Where(task => project.ID == task.ProjectID).ToList();
+            var project = _pmContext.Projects.Single(project => project.ID == id);
+            var tasks = _pmContext.Tasks.Where(task => project.ID == task.ProjectID).ToList();
             foreach (var task in tasks)
             {
                 task.ProjectID = -1;
-                _pmDbContext.Update(task);
-                _pmDbContext.SaveChanges();
+                _pmContext.Update(task);
+                _pmContext.SaveChanges();
             }
-            _pmDbContext.Remove(project);
-            _pmDbContext.SaveChanges();
+            _pmContext.Remove(project);
+            _pmContext.SaveChanges();
             return Ok("Project Deleted : " + project.Name);
             // throw new NotImplementedException();
         }
