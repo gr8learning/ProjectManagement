@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectManagement.Entities;
 using System;
 
 namespace ProjectManagement.Shared
@@ -9,5 +10,8 @@ namespace ProjectManagement.Shared
         {
 
         }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<Project> Projects { get; set; }
     }
 }
