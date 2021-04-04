@@ -53,8 +53,16 @@ namespace ProjectManagement.Api.Controllers
         public IActionResult Post(Entities.Task task)
         {
             task.AssignedToUser = _pmContext.Users.Where(user => task.AssignedToUserID == user.ID).FirstOrDefault();
+            if (task.AssignedToUser == null)
+            {
+                task.AssignedToUserID = -1;
+            }
             task.CreatedOn = DateTime.UtcNow;
-            // var project = _pmContext.Projects.Where(project => task.ProjectID == project.ID).FirstOrDefault();
+            var project = _pmContext.Projects.Where(project => task.ProjectID == project.ID).FirstOrDefault();
+            if (project == null)
+            {
+                task.ProjectID = -1;
+            }
             _pmContext.Tasks.Add(task);
             // project.Tasks.Append(task);
             // _pmContext.Update(project);
