@@ -84,18 +84,23 @@ namespace ProjectManagement.Api.Controllers
         [Route("{id}")]
         public IActionResult DeleteById(long id)
         {
-            var user = _pmContext.Users.Single(user => user.ID == id);
-            var tasks = _pmContext.Tasks.Where(task => user.ID == task.AssignedToUserID).ToList();
-            foreach (var task in tasks)
-            {
-                task.AssignedToUserID = -1;
-                _pmContext.Update(task);
+            try { 
+                var user = _pmContext.Users.Single(user => user.ID == id);
+                var tasks = _pmContext.Tasks.Where(task => user.ID == task.AssignedToUserID).ToList();
+                foreach (var task in tasks)
+                {
+                    task.AssignedToUserID = -1;
+                    _pmContext.Update(task);
+                    _pmContext.SaveChanges();
+                }
+                _pmContext.Remove(user);
                 _pmContext.SaveChanges();
+                return Ok("User Deleted : " + user.FirstName + " " + user.LastName);
+                // throw new NotImplementedException();
+            } catch
+            {
+                return NotFound(id);
             }
-            _pmContext.Remove(user);
-            _pmContext.SaveChanges();
-            return Ok("User Deleted : " + user.FirstName + " " + user.LastName);
-            // throw new NotImplementedException();
         }
     }
 }

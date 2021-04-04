@@ -13,5 +13,11 @@
 /ProjectManagement.Api/ProjectManagement.Data/obj
 /ProjectManagement.Api/ProjectManagement.Data.Implementation/bin/Debug/netstandard2.0
 
+*/packages/*
+*.dll
+*.exe
+*.pdb
+*.7z
 .vs
 .suo
+*.cache
