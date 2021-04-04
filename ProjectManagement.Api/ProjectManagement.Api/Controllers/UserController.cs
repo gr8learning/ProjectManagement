@@ -69,18 +69,20 @@ namespace ProjectManagement.Api.Controllers
                 foreach (var task in tasks)
                 {
                     task.AssignedToUserID = -1;
-                    _pmContext.Update(task);
                     try
                     {
+                        _pmContext.Update(task);
                         _pmContext.SaveChanges();
-                    } catch 
+                    }
+                    catch 
                     {
                         Console.WriteLine(String.Format("Error while updating task: id={0}, detail={1}", task.ID, task.Detail));
                     }
                 }
-                _pmContext.Remove(u);
+                
                 try
                 {
+                    _pmContext.Remove(u);
                     _pmContext.SaveChanges();
                     res += "User Deleted : " + u.FirstName + " " + u.LastName + "\n";
                 } catch 

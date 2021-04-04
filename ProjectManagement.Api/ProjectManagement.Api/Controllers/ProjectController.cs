@@ -86,12 +86,27 @@ namespace ProjectManagement.Api.Controllers
                 foreach (var task in tasks)
                 {
                     task.ProjectID = -1;
-                    _pmContext.Update(task);
-                    _pmContext.SaveChanges();
+                    try
+                    {
+                        _pmContext.Update(task);
+                        _pmContext.SaveChanges();
+                    }
+                    catch
+                    {
+                        Console.WriteLine(String.Format("Error while updating task: id={0}, detail={1}", task.ID, task.Detail));
+                    }
                 }
-                _pmContext.Remove(p);
-                _pmContext.SaveChanges();
-                res += "Project Deleted : " + p.Name + "\n";
+
+                try
+                {
+                    _pmContext.Remove(p);
+                    _pmContext.SaveChanges();
+                    res += "Project Deleted : " + p.Name + "\n";
+                }
+                catch
+                {
+                    res += "Error in deleting project : " + p.Name + "\n";
+                }
             }
             return Ok(res);
             // throw new NotImplementedException();
@@ -107,11 +122,29 @@ namespace ProjectManagement.Api.Controllers
             {
                 task.ProjectID = -1;
                 _pmContext.Update(task);
-                _pmContext.SaveChanges();
+                try
+                {
+                    _pmContext.Update(task);
+                    _pmContext.SaveChanges();
+                }
+                catch
+                {
+                    Console.WriteLine(String.Format("Error while updating task: id={0}, detail={1}", task.ID, task.Detail));
+                }
             }
-            _pmContext.Remove(project);
-            _pmContext.SaveChanges();
-            return Ok("Project Deleted : " + project.Name);
+
+            try
+            {
+                _pmContext.Remove(project);
+                _pmContext.SaveChanges();
+                return Ok("Project Deleted : " + project.Name);
+            }
+            catch
+            {
+                return Ok("Error in deleting project : " + project.Name);
+            }
+            
+            
             // throw new NotImplementedException();
         }
     }

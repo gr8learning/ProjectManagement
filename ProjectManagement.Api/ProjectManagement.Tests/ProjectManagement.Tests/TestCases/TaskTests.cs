@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ProjectManagement.Tests.Tests
+namespace ProjectManagement.Tests
 {
     public class TaskTests: IClassFixture<TestClientProvider>
     {
@@ -30,7 +30,7 @@ namespace ProjectManagement.Tests.Tests
             response = await _testServer.CreateRequest("/api/Task/1").SendAsync("GET");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             response = await _testServer.CreateRequest("/api/Task/3").SendAsync("GET");
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Trait("Collection", "Task")]
