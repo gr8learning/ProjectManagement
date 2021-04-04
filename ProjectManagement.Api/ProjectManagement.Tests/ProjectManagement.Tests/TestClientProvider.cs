@@ -7,6 +7,9 @@ using System.Net.Http;
 using RESTFulSense.Clients;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace ProjectManagement.Tests
 {
@@ -22,6 +25,25 @@ namespace ProjectManagement.Tests
             this.baseClient = this.webApplicationFactory.CreateClient();
             this.apiFactoryClient = new RESTFulApiFactoryClient(this.baseClient);
             this._testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+        }
+
+        public async Task<HttpStatusCode> RequestWithMethod(string uri, StringContent stringContent, string methodType)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            switch (methodType)
+            {
+                case "PUT": request = new HttpRequestMessage(HttpMethod.Put, uri); break;
+                case "DELETE": request = new HttpRequestMessage(HttpMethod.Delete, uri); break;
+                default: request = new HttpRequestMessage(HttpMethod.Post, uri); break;
+            }
+            request.Content = stringContent;
+
+            var client = _testServer.CreateClient();
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = await client.SendAsync(request);
+            return response.StatusCode;
         }
 
         public void Dispose()

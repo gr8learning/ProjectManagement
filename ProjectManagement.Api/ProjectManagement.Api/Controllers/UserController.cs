@@ -70,11 +70,23 @@ namespace ProjectManagement.Api.Controllers
                 {
                     task.AssignedToUserID = -1;
                     _pmContext.Update(task);
-                    _pmContext.SaveChanges();
+                    try
+                    {
+                        _pmContext.SaveChanges();
+                    } catch 
+                    {
+                        Console.WriteLine(String.Format("Error while updating task: id={0}, detail={1}", task.ID, task.Detail));
+                    }
                 }
                 _pmContext.Remove(u);
-                _pmContext.SaveChanges();
-                res += "User Deleted : " + u.FirstName + " " + u.LastName + "\n";
+                try
+                {
+                    _pmContext.SaveChanges();
+                    res += "User Deleted : " + u.FirstName + " " + u.LastName + "\n";
+                } catch 
+                {
+                    res += "Error in deleting user : " + u.FirstName + " " + u.LastName + "\n";
+                }
             }
             return Ok(res);
             // throw new NotImplementedException();

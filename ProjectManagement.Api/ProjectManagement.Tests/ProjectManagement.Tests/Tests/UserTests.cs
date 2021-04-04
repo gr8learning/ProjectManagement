@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -14,32 +13,17 @@ namespace ProjectManagement.Tests
     public class UserTests: IClassFixture<TestClientProvider>
     {
         private TestServer _testServer;
+        delegate Task<HttpStatusCode> RequestWithMethod(string uri, StringContent stringContent, string methodType);
+        RequestWithMethod _requestWithMethod;
         public UserTests(TestClientProvider testClientProvider)
         {
             _testServer = testClientProvider._testServer;
+            _requestWithMethod = new RequestWithMethod(testClientProvider.RequestWithMethod);
         }
 
-        public async Task<HttpStatusCode> RequestWithMethod(string uri, StringContent stringContent, string methodType)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, uri);
-            switch(methodType)
-            {
-                case "PUT": request = new HttpRequestMessage(HttpMethod.Put, uri); break;
-                case "DELETE": request = new HttpRequestMessage(HttpMethod.Delete, uri); break;
-                default: request = new HttpRequestMessage(HttpMethod.Post, uri); break;
-            }
-            request.Content = stringContent;
-
-            var client = _testServer.CreateClient();
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var response = await client.SendAsync(request);
-            return response.StatusCode;
-        }
-
+        [Trait("Collection", "User")]
         [Fact]
-        public async void getUserDetailsTest()
+        public async void getUserTest()
         {
             var response = await _testServer.CreateRequest("/api/User").SendAsync("GET");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -49,6 +33,7 @@ namespace ProjectManagement.Tests
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
+        [Trait("Collection", "User")]
         [Fact]
         public async void addUserTest()
         {
@@ -58,12 +43,13 @@ namespace ProjectManagement.Tests
                 { "LastName", "Kumar"},
                 { "Email", "nitinkumar6912@gmail.com" }
             }), Encoding.Default, "application/json");
-            var statusCode = await RequestWithMethod("/api/User", content, "POST");
+            var statusCode = await _requestWithMethod("/api/User", content, "POST");
             Assert.Equal(HttpStatusCode.OK, statusCode);
             var response = await _testServer.CreateRequest("/api/User/1").SendAsync("GET");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
+        [Trait("Collection", "User")]
         [Fact]
         public async void updateUserTest()
         {
@@ -74,14 +60,15 @@ namespace ProjectManagement.Tests
                 { "Email", "nitinkumar6912@gmail.com" },
                 { "id", 1 }
             }), Encoding.Default, "application/json");
-            var statusCode = await RequestWithMethod("/api/User", content, "PUT");
+            var statusCode = await _requestWithMethod("/api/User", content, "PUT");
             Assert.Equal(HttpStatusCode.OK, statusCode);
             var response = await _testServer.CreateRequest("/api/User/1").SendAsync("GET");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
+        [Trait("Collection", "User")]
         [Fact]
-        public async void deleteUserDetailsTest()
+        public async void deleteUserTest()
         {
             var response = await _testServer.CreateRequest("/api/User/2").SendAsync("DELETE");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
