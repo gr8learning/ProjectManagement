@@ -29,6 +29,13 @@ namespace ProjectManagement.Api
         {
             services.AddControllers();
             services.AddDbContext<PMContext>(opt => opt.UseInMemoryDatabase("taskPlanner"));
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddCors(options => 
+            {
+                options.AddDefaultPolicy(builder => {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,16 +46,20 @@ namespace ProjectManagement.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
-            app.UseRouting();
+            // app.UseRouting();
+
+            app.UseCors();
+
+            app.UseMvc();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            /* app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            }); */
         }
     }
 }
