@@ -77,9 +77,17 @@ namespace ProjectManagement.Api.Controllers
         [HttpPut]
         public IActionResult Put(User user)
         {
-            _pmContext.Users.Update(user);
-            _pmContext.SaveChanges();
-            return Ok(user);
+            var u = _pmContext.Users.Where(u => u.Email == user.Email && u.ID != user.ID).FirstOrDefault();
+            if (u == null)
+            {
+                _pmContext.Users.Update(user);
+                _pmContext.SaveChanges();
+                return Ok(user);
+            } else
+            {
+                return Conflict(user);
+            }
+            
             // throw new NotImplementedException();
         }
 
