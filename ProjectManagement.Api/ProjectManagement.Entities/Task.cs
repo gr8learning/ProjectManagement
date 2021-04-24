@@ -21,7 +21,7 @@ namespace ProjectManagement.Entities
         public DateTime CreatedOn { get; set; }
 
         [ForeignKey("AssignedToUserID")]
-        public virtual User AssignedToUser { get; set; }
+        public virtual UserDto AssignedToUser { get; set; }
 
     }
 }

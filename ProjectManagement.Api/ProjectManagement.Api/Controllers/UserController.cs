@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Entities;
 using ProjectManagement.Shared;
 using System;
@@ -13,6 +14,7 @@ namespace ProjectManagement.Api.Controllers
     public class UserController : BaseController<User>
     {
         private readonly PMContext _pmContext;
+        private readonly dynamic mapper;
 
         public UserController(PMContext context)
         {
@@ -20,13 +22,17 @@ namespace ProjectManagement.Api.Controllers
 
             // seed data
             _pmContext.Database.EnsureCreated();
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDto>());
+            mapper = new Mapper(config);
         }
 
         [HttpGet]
         public new IActionResult Get()
         {
             var users = _pmContext.Users.ToList();
-            return Ok(users);
+            List<UserDto> u = new List<UserDto>();
+            users.ForEach(user => u.Add(mapper.Map<UserDto>(user)));
+            return Ok(u);
             // throw new NotImplementedException();
         }
 
@@ -35,7 +41,7 @@ namespace ProjectManagement.Api.Controllers
         public new IActionResult Get(long id)
         {
             var user = _pmContext.Users.Where(user => id == user.ID).FirstOrDefault();
-            return Ok(user);
+            return Ok(mapper.Map<UserDto>(user));
             // throw new NotImplementedException();
         }
 
@@ -46,10 +52,10 @@ namespace ProjectManagement.Api.Controllers
             var user = _pmContext.Users.Where(user => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
             if (user != null)
             {
-                return Ok(user);
+                return Ok(mapper.Map<UserDto>(user));
             } else
             {
-                return NotFound(u);
+                return NotFound(mapper.Map<UserDto>(user));
             }
             
             // throw new NotImplementedException();
@@ -64,11 +70,11 @@ namespace ProjectManagement.Api.Controllers
                 _pmContext.Users.Add(user);
                 _pmContext.SaveChanges();
 
-                return Ok(user);
+                return Ok(mapper.Map<UserDto>(user));
             }
             else
             {
-                return Conflict(user);
+                return Conflict(mapper.Map<UserDto>(user));
             }
             
             //throw new NotImplementedException();
@@ -82,10 +88,10 @@ namespace ProjectManagement.Api.Controllers
             {
                 _pmContext.Users.Update(user);
                 _pmContext.SaveChanges();
-                return Ok(user);
+                return Ok(mapper.Map<UserDto>(user));
             } else
             {
-                return Conflict(user);
+                return Conflict(mapper.Map<UserDto>(user));
             }
             
             // throw new NotImplementedException();
