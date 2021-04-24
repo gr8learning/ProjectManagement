@@ -27,15 +27,16 @@ namespace ProjectManagement.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddDbContext<PMContext>(opt => opt.UseInMemoryDatabase("taskPlanner"));
-            services.AddMvc(options => options.EnableEndpointRouting = false);
-            services.AddCors(options => 
+            services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder => {
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
+            services.AddControllers();
+            services.AddDbContext<PMContext>(opt => opt.UseInMemoryDatabase("taskPlanner"));
+            // services.AddMvc(options => options.EnableEndpointRouting = false);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,18 +49,18 @@ namespace ProjectManagement.Api
 
             // app.UseHttpsRedirection();
 
-            // app.UseRouting();
-
             app.UseCors();
 
-            app.UseMvc();
+            app.UseRouting();
+
+            // app.UseMvc();
 
             app.UseAuthorization();
 
-            /* app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            }); */
+            });
         }
     }
 }
