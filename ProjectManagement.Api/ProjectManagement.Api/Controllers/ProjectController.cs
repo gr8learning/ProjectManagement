@@ -59,7 +59,7 @@ namespace ProjectManagement.Api.Controllers
             _pmContext.Projects.Add(project);
             _pmContext.SaveChanges();
 
-            return Ok("Project Added : " + project.Name);
+            return Ok(project);
             // throw new NotImplementedException();
         }
 
@@ -79,7 +79,7 @@ namespace ProjectManagement.Api.Controllers
         public new IActionResult Delete()
         {
             var projects = _pmContext.Projects.ToList();
-            var res = "";
+            List<string> res = new List<string>();
             foreach (var p in projects)
             {
                 var tasks = _pmContext.Tasks.Where(task => p.ID == task.ProjectID).ToList();
@@ -101,11 +101,11 @@ namespace ProjectManagement.Api.Controllers
                 {
                     _pmContext.Remove(p);
                     _pmContext.SaveChanges();
-                    res += "Project Deleted : " + p.Name + "\n";
+                    res.Add("Project Deleted : " + p.Name);
                 }
                 catch
                 {
-                    res += "Error in deleting project : " + p.Name + "\n";
+                    res.Add("Error in deleting project : " + p.Name);
                 }
             }
             return Ok(res);
@@ -137,11 +137,11 @@ namespace ProjectManagement.Api.Controllers
             {
                 _pmContext.Remove(project);
                 _pmContext.SaveChanges();
-                return Ok("Project Deleted : " + project.Name);
+                return Ok(new List<string> { "Project Deleted : " + project.Name });
             }
             catch
             {
-                return Ok("Error in deleting project : " + project.Name);
+                return Ok(new List<string> { "Error in deleting project : " + project.Name });
             }
             
             

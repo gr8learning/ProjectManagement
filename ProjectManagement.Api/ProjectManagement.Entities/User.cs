@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ProjectManagement.Entities
+﻿namespace ProjectManagement.Entities
 {
     public class User : BaseEntity
     {
@@ -11,5 +8,7 @@ namespace ProjectManagement.Entities
         public string LastName { get; set; }
 
         public string Email { get; set; }
+
+        public string Password { get; set; }
     }
 }
