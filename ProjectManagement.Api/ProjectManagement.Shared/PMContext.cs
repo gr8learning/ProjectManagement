@@ -13,8 +13,9 @@ namespace ProjectManagement.Shared
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(new User { ID = 1, FirstName = "Nitin", LastName = "Kumar", Email = "abc@alpha.beta" });
-            modelBuilder.Entity<User>().HasData(new User { ID = 2, FirstName = "Ram", LastName = "Das", Email = "rd@alpha.beta" });
+            modelBuilder.Entity<User>().HasData(new User { ID = 1, FirstName = "Nitin", LastName = "Kumar", Email = "great@alpha.beta", Password = "alpha" });
+            modelBuilder.Entity<User>().HasData(new User { ID = 2, FirstName = "Ram", LastName = "Das", Email = "nitin@alpha.beta", Password = "alpha" });
+            modelBuilder.Entity<User>().HasData(new User { ID = 3, FirstName = "Guest", LastName = "", Email = "guest@welcome.in", Password = "alpha" });
             modelBuilder.Entity<Project>().HasData(new Project { ID = 1, Name = "P1", Detail = "Project-1", CreatedOn = DateTime.UtcNow });
             modelBuilder.Entity<Project>().HasData(new Project { ID = 2, Name = "P2", Detail = "Project-2", CreatedOn = DateTime.UtcNow });
             modelBuilder.Entity<Project>().HasData(new Project { ID = 3, Name = "P3", Detail = "Project-3", CreatedOn = DateTime.UtcNow });

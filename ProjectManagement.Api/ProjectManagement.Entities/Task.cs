@@ -1,8 +1,6 @@
 ﻿using ProjectManagement.Entities.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace ProjectManagement.Entities
@@ -23,7 +21,7 @@ namespace ProjectManagement.Entities
         public DateTime CreatedOn { get; set; }
 
         [ForeignKey("AssignedToUserID")]
-        public virtual User AssignedToUser { get; set; }
+        public virtual UserDto AssignedToUser { get; set; }
 
     }
 }

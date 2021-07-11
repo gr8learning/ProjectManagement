@@ -53,8 +53,16 @@ namespace ProjectManagement.Api.Controllers
         public IActionResult Post(Entities.Task task)
         {
             task.AssignedToUser = _pmContext.Users.Where(user => task.AssignedToUserID == user.ID).FirstOrDefault();
+            if (task.AssignedToUser == null)
+            {
+                task.AssignedToUserID = -1;
+            }
             task.CreatedOn = DateTime.UtcNow;
-            // var project = _pmContext.Projects.Where(project => task.ProjectID == project.ID).FirstOrDefault();
+            var project = _pmContext.Projects.Where(project => task.ProjectID == project.ID).FirstOrDefault();
+            if (project == null)
+            {
+                task.ProjectID = -1;
+            }
             _pmContext.Tasks.Add(task);
             // project.Tasks.Append(task);
             // _pmContext.Update(project);
@@ -70,7 +78,7 @@ namespace ProjectManagement.Api.Controllers
             taskInDb.Detail = task.Detail;
             taskInDb.Status = task.Status;
             taskInDb.AssignedToUserID = task.AssignedToUserID;
-            taskInDb.AssignedToUser = _pmContext.Users.Single(user => task.AssignedToUserID == user.ID);
+            // taskInDb.AssignedToUser = task.AssignedToUserID < 0 ? null : _pmContext.Users.Single(user => task.AssignedToUserID == user.ID);
             taskInDb.ProjectID = task.ProjectID;
             _pmContext.Update(taskInDb);
             _pmContext.SaveChanges();
@@ -82,10 +90,10 @@ namespace ProjectManagement.Api.Controllers
         public new IActionResult Delete()
         {
             var tasks = _pmContext.Tasks.ToList();
-            string res = "";
+            List<string> res = new List<string>();
             foreach (var task in tasks)
             {
-                res += "Task Deleted : " + task.Detail + "\n";
+                res.Add("Task Deleted : " + task.Detail);
             }
             _pmContext.RemoveRange(tasks);
             _pmContext.SaveChanges();
@@ -112,7 +120,7 @@ namespace ProjectManagement.Api.Controllers
             // _pmContext.Update(project);
 
             _pmContext.SaveChanges();
-            return Ok("Task Deleted : " + task.Detail);
+            return Ok(new List<string> { "Task Deleted : " + task.Detail });
             // throw new NotImplementedException();
         }
     }

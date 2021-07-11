@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Entities;
 using ProjectManagement.Shared;
 using System;
@@ -13,6 +14,7 @@ namespace ProjectManagement.Api.Controllers
     public class UserController : BaseController<User>
     {
         private readonly PMContext _pmContext;
+        private readonly dynamic mapper;
 
         public UserController(PMContext context)
         {
@@ -20,13 +22,17 @@ namespace ProjectManagement.Api.Controllers
 
             // seed data
             _pmContext.Database.EnsureCreated();
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDto>());
+            mapper = new Mapper(config);
         }
 
         [HttpGet]
         public new IActionResult Get()
         {
             var users = _pmContext.Users.ToList();
-            return Ok(users);
+            List<UserDto> u = new List<UserDto>();
+            users.ForEach(user => u.Add(mapper.Map<UserDto>(user)));
+            return Ok(u);
             // throw new NotImplementedException();
         }
 
@@ -35,26 +41,59 @@ namespace ProjectManagement.Api.Controllers
         public new IActionResult Get(long id)
         {
             var user = _pmContext.Users.Where(user => id == user.ID).FirstOrDefault();
-            return Ok(user);
+            return Ok(mapper.Map<UserDto>(user));
+            // throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult GetByEmail(User u)
+        {
+            var user = _pmContext.Users.Where(user => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
+            if (user != null)
+            {
+                return Ok(mapper.Map<UserDto>(user));
+            } else
+            {
+                return NotFound(mapper.Map<UserDto>(user));
+            }
+            
             // throw new NotImplementedException();
         }
 
         [HttpPost]
         public IActionResult Post(User user)
         {
-            _pmContext.Users.Add(user);
-            _pmContext.SaveChanges();
+            var u = _pmContext.Users.Where(u => u.Email == user.Email).FirstOrDefault();
+            if (u == null)
+            {
+                _pmContext.Users.Add(user);
+                _pmContext.SaveChanges();
 
-            return Ok("User Added : " + user.FirstName + " " + user.LastName);
+                return Ok(mapper.Map<UserDto>(user));
+            }
+            else
+            {
+                return Conflict(mapper.Map<UserDto>(user));
+            }
+            
             //throw new NotImplementedException();
         }
 
         [HttpPut]
         public IActionResult Put(User user)
         {
-            _pmContext.Users.Update(user);
-            _pmContext.SaveChanges();
-            return Ok(user);
+            var u = _pmContext.Users.Where(u => u.Email == user.Email && u.ID != user.ID).FirstOrDefault();
+            if (u == null)
+            {
+                _pmContext.Users.Update(user);
+                _pmContext.SaveChanges();
+                return Ok(mapper.Map<UserDto>(user));
+            } else
+            {
+                return Conflict(mapper.Map<UserDto>(user));
+            }
+            
             // throw new NotImplementedException();
         }
 
@@ -62,19 +101,33 @@ namespace ProjectManagement.Api.Controllers
         public new IActionResult Delete()
         {
             var user = _pmContext.Users.ToList();
-            var res = "";
+            List<string> res = new List<string>();
             foreach (var u in user)
             {
                 var tasks = _pmContext.Tasks.Where(task => u.ID == task.AssignedToUserID).ToList();
                 foreach (var task in tasks)
                 {
                     task.AssignedToUserID = -1;
-                    _pmContext.Update(task);
-                    _pmContext.SaveChanges();
+                    try
+                    {
+                        _pmContext.Update(task);
+                        _pmContext.SaveChanges();
+                    }
+                    catch
+                    {
+                        Console.WriteLine(String.Format("Error while updating task: id={0}, detail={1}", task.ID, task.Detail));
+                    }
                 }
-                _pmContext.Remove(u);
-                _pmContext.SaveChanges();
-                res += "User Deleted : " + u.FirstName + " " + u.LastName + "\n";
+
+                try
+                {
+                    _pmContext.Remove(u);
+                    _pmContext.SaveChanges();
+                    res.Add("User Deleted : " + u.FirstName + " " + u.LastName);
+                } catch
+                {
+                    res.Add("Error in deleting user : " + u.FirstName + " " + u.LastName);
+                }
             }
             return Ok(res);
             // throw new NotImplementedException();
@@ -84,18 +137,23 @@ namespace ProjectManagement.Api.Controllers
         [Route("{id}")]
         public IActionResult DeleteById(long id)
         {
-            var user = _pmContext.Users.Single(user => user.ID == id);
-            var tasks = _pmContext.Tasks.Where(task => user.ID == task.AssignedToUserID).ToList();
-            foreach (var task in tasks)
-            {
-                task.AssignedToUserID = -1;
-                _pmContext.Update(task);
+            try { 
+                var user = _pmContext.Users.Single(user => user.ID == id);
+                var tasks = _pmContext.Tasks.Where(task => user.ID == task.AssignedToUserID).ToList();
+                foreach (var task in tasks)
+                {
+                    task.AssignedToUserID = -1;
+                    _pmContext.Update(task);
+                    _pmContext.SaveChanges();
+                }
+                _pmContext.Remove(user);
                 _pmContext.SaveChanges();
+                return Ok(new List<string> { "User Deleted : " + user.FirstName + " " + user.LastName });
+                // throw new NotImplementedException();
+            } catch
+            {
+                return NotFound(id);
             }
-            _pmContext.Remove(user);
-            _pmContext.SaveChanges();
-            return Ok("User Deleted : " + user.FirstName + " " + user.LastName);
-            // throw new NotImplementedException();
         }
     }
 }
