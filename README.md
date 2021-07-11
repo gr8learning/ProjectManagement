@@ -20,3 +20,14 @@ On completion of the project Learners will be familiar with below tools and conc
 4.	Web Api
 5.	Securing Api
 6.	Consuming REST Api in React framework
+
+
+# Follow below steps to deploy into Heroku
+1. Create release publish for dotnet dlls.
+2. Connect to heroku remote (you can also create new one)
+3. Docker should be installed already
+4. Execute below from parent directory. [Dockerfile is available there]
+	* `heroku build -t <herokuappname> .` 
+	* `heroku container:login`
+	* `heroku container:push web`
+	* `heroku container:release web`
