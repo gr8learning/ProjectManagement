@@ -22,7 +22,8 @@ On completion of the project Learners will be familiar with below tools and conc
 6.	Consuming REST Api in React framework
 
 
-# Follow below steps to deploy into Heroku : https://faun.pub/deploy-net-core-api-to-heroku-for-free-2f7f651932c4
+# Follow below steps to deploy into Heroku : 
+## https://faun.pub/deploy-net-core-api-to-heroku-for-free-2f7f651932c4
 1. Create release publish for dotnet dlls.
 2. Connect to heroku remote (you can also create new one)
 3. Docker should be installed already
